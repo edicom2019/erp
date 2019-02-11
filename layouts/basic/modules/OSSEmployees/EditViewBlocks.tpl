@@ -144,6 +144,49 @@
                         var age= today.diff(ate_embauche, 'years');
                         document.getElementById('OSSEmployees_editView_fieldName_anciennete').value=age;
                     });
+    
+                         /////////change
+                    $('select[name="type_emp"]').change(function(){
+                    	//option[value="Freelancer"]
+                    	var type=$('select[name="type_emp"]').find(':selected').text();
+                    	if(type=='Freelancer'){
+                          isFreelancer();
+                    	}else{
+                         isEmployee();
+                    	}
+                 //alert("eee");
+                    	
+                        
+                    });
 
+    function isEmployee(){
+    	var ice= $('#OSSEmployees_editView_fieldName_ice').parents().first();
+            ice.parents().first().hide();
+        var patente=$('#OSSEmployees_editView_fieldName_patente').parents().first();
+            patente.parents().first().hide();
+
+        var id_fiscal=$('#OSSEmployees_editView_fieldName_identifiat_fiscal').parents().first();
+            id_fiscal.parents().first().hide();
+        var statut_type_emp=$('select[name=statut_type_emp]').parents().first();
+            statut_type_emp= statut_type_emp.parents().first().parents().first().hide();
+
+        var contrat=$('select[name=contract]').parents().first().parents().first(); 
+            contrat=contrat.parents().first().show();
+    }
+    function  isFreelancer(){
+        var ice= $('#OSSEmployees_editView_fieldName_ice').parents().first();
+            ice.parents().first().show();
+        var patente=$('#OSSEmployees_editView_fieldName_patente').parents().first();
+                               patente.parents().first().show();
+
+        var id_fiscal=$('#OSSEmployees_editView_fieldName_identifiat_fiscal').parents().first();
+            id_fiscal.parents().first().show();
+        var statut_type_emp=$('select[name=statut_type_emp]').parents().first();
+            statut_type_emp= statut_type_emp.parents().first().parents().first().show();
+                               
+        var contrat=$('select[name=contract]').parents().first().parents().first(); 
+            contrat=contrat.parents().first().hide();
+        console.log(contrat);                   
+                 }
                 });
 			</script>
