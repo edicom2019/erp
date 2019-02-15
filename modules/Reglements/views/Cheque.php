@@ -52,9 +52,9 @@ class Reglements_Cheque_View extends Vtiger_Index_View
         $date_echeance=$request->get('date_echeance');
         $date_echeance= date('Y-m-d',strtotime(str_replace('/', '-', $date_echeance)));
         if($request->get('banque')=='BP')
-            $banque="Banque Populaire";
+            $banque="BANQUE POPULAIRE";
         else  if($request->get('banque')=='SG')
-            $banque="Attijariwafa bank";
+            $banque="SGMB";
 
         if($request->get('type')==1)
             $type="Effet";
@@ -86,7 +86,7 @@ class Reglements_Cheque_View extends Vtiger_Index_View
        $response->emit();
        die();*/
         $mysqli = new mysqli($dbconfig['db_server'], $dbconfig['db_username'], $dbconfig['db_password'], $dbconfig['db_name'],$dbconfig['db_port']);
-        $query = $mysqli->query("SELECT count(*) as cnt FROM u_yf_reglements r WHERE r.banque like '$banque' AND r.type like '$type' AND date_valeur = '$date_echeance' ");/*CURDATE()*/
+        $query = $mysqli->query("SELECT count(*) as cnt FROM u_yf_reglements r WHERE r.banque_edicom like '$banque' AND r.type like '$type' AND date_valeur = '$date_echeance' ");/*CURDATE()*/
         $reglements = $query->fetch_assoc()["cnt"];
         $mysqli->close();
         return $reglements;
@@ -99,9 +99,9 @@ class Reglements_Cheque_View extends Vtiger_Index_View
         $date_echeance= date('Y-m-d',strtotime(str_replace('/', '-', $date_echeance)));
         $bordereau =  $request->get('bordereau');
         if($request->get('banque')=='BP')
-            $banque="Banque Populaire";
+            $banque="BANQUE POPULAIRE";
         else  if($request->get('banque')=='SG')
-            $banque="Attijariwafa bank";
+            $banque="SGMB";
 
         if($request->get('type')==1)
             $type="Effet";
@@ -114,7 +114,7 @@ class Reglements_Cheque_View extends Vtiger_Index_View
         $dbconfig = AppConfig::main('dbconfig');
 
         $mysqli = new mysqli($dbconfig['db_server'], $dbconfig['db_username'], $dbconfig['db_password'], $dbconfig['db_name'],$dbconfig['db_port']);
-        $query = $mysqli->query("UPDATE u_yf_reglements r SET bordereau='$bordereau' WHERE r.banque = '$banque' AND r.type like '$type' AND date_valeur = '$date_echeance' ");
+        $query = $mysqli->query("UPDATE u_yf_reglements r SET bordereau='$bordereau' WHERE r.	banque_edicom = '$banque' AND r.type like '$type' AND date_valeur = '$date_echeance' ");
         $mysqli->close();
 
     }
@@ -122,84 +122,193 @@ class Reglements_Cheque_View extends Vtiger_Index_View
 
     public function generer($request)
     {
+        $t="CHEQUES";
+        $DES="BORDEREAU DES REMISE DES VALEURS";
         $viewer = $this->getViewer($request);
         $qualifiedModuleName = $request->getModule(false);
 
         $moduleName = $request->getModule();
 
         $date_echeance =  $request->get('date_echeance');
+        $bordereau =  $request->get('bordereau');
 
         $date_echeance= date('Y-m-d',strtotime(str_replace('/', '-', $date_echeance)));
         if($request->get('banque')=='BP')
-            $banque="Banque Populaire";
+        {
+            $banque="BANQUE POPULAIRE";
+            $agence="AGENCE Al Moukaouama";
+            $RIB="190 780 21211 3030639 000 1 41";
+            $img='<br><img src="http://100.1.1.8/ERP/erptest/public_html/layouts/resources/Logo/bp.png" />';
+
+        }
+
         else  if($request->get('banque')=='SG')
-            $banque="Attijariwafa bank";
-        if($request->get('type')==1)
-            $type="Effet";
-        else
-            if($request->get('type')==2)
+        {
+            $banque="SGMB";
+            $agence="AGENCE BIR ANZARANE";
+            $RIB="022 780 000 054 00 051035 31/74";
+            $img='<br><img src="http://100.1.1.8/ERP/erptest/public_html/layouts/resources/Logo/societe-generale.png" style="width: 150px;height: 140px;margin-top: -40px" />';
+
+        }
+           if($request->get('type')==2)
                 $type="Cheque sur place";
             else
                 if($request->get('type')==3)
                     $type="Cheque hors place";
 
-        $encaissements=(new \App\Db\Query())->select("inv.number,acc.accountname,acc.ville,r.date_valeur,r.reg_a_recevoir,r.bordereau,r.type,r.banque,r.montant")
-            ->leftJoin('u_yf_finvoice inv','inv.finvoiceid=r.facture')
+        $encaissements=(new \App\Db\Query())->select("inv.number,acc.accountname,acc.ville,r.date_valeur,r.reg_a_recevoir,r.bordereau,r.type,r.banque,r.montant,r.banque,r.libelle,r.banque_edicom")
+            ->leftJoin('u_yf_finvoice inv','inv.finvoiceid=r.factu')
             ->leftJoin('vtiger_account acc','inv.accountid=acc.accountid')
-            ->where(["banque"=>$banque,"type"=>$type,"date_valeur"=>$date_echeance])
+            ->where(["banque_edicom"=>$banque,"type"=>$type,"date_valeur"=>$date_echeance,"bordereau"=>$bordereau])
             ->from("u_yf_reglements r")->all();
 
         $sommes=(new \App\Db\Query())->select("sum(r.montant) as somme")
-            ->where(["banque"=>$banque,"type"=>$type,"date_valeur"=>$date_echeance])
+            ->where(["banque_edicom"=>$banque,"type"=>$type,"date_valeur"=>$date_echeance,"bordereau"=>$bordereau])
             ->from("u_yf_reglements r")->all();
         $viewer->assign('ENCAISSEMENTS', $encaissements);
         $viewer->assign('SOMMES', $sommes);
         $viewer->view('genererPDF.tpl', $qualifiedModuleName);
 
+
         $html2pdf = new Html2Pdf('P','A4','fr');
         $html2pdf->pdf->SetAuthor('Encaissement');
         $html2pdf->pdf->SetTitle('Encaissement');
+        $pagination='<page><page_footer> [[page_cu]]/[[page_nb]]</page_footer></page>';
+        $html2pdf->writeHTML($pagination);
+        foreach ($encaissements as &$encaissement) {
+        }
+        foreach ($sommes as &$somme) {
+        }
+
+        $header = ' '.$img.'<h3>Edicom SA</h3>
+                            <strong style="margin-left: 80px;font-weight: 500;">'.$agence.'</strong> <br><br>
+                            <strong style="margin-left: 80px;font-weight: 500;">'.$encaissement["banque_edicom"].'</strong>:<strong> '.$RIB.'</strong><br> <br>
+                            <strong style="margin-left: 80px;">'.$DES.'</strong> <strong style="margin-left: 200px"> N° '.$encaissement["bordereau"].' </strong> <br><br>
+                            <strong style="margin-left: 80px;font-size: 12px">'.$t.'</strong><br><br>';
+          $footer=' <strong style="margin-left: 80px;">LE RESPONSABLE DE L\'AGENCE</strong> <strong style="margin-left: 200px"> LE CLIENT </strong> <br><br> ';
+
+
         if($request->get('banque')=='BP')
         {
-            $html2pdf->writeHTML('<br><img src="http://100.1.1.8/ERP/erptest/public_html/layouts/resources/Logo/bp.png" /> <h3>Edicom SA</h3>
-                            <strong style="margin-left: 80px;font-weight: 400">AGENCE Al Moukaouama</strong> <br><br>
-                            <strong style="margin-left: 80px;font-weight: 400">BANQUE POPULAIRE</strong> :<br> <br>
-                            <strong style="margin-left: 80px;">BORDEREAU DES REMISE DES VALEURS</strong> <strong style="margin-left: 200px"> N° </strong> <br><br>
-                            <strong style="margin-left: 80px;font-weight: 500">CHEQUES</strong>
-                            
-                            ');
-
-
+            $html2pdf->writeHTML($header);
+            $body='';
+            foreach ($encaissements as &$encaissement)
+            {
+                $body.='
+                <tr >
+ <td style="border: 1px solid black;height: 20px;">'.$encaissement["number"].'</td>
+ <td  style="border: 1px solid black;height: 20px;">'.$encaissement["accountname"].'</td>
+ <td  style="border: 1px solid black;height: 20px;">'.$encaissement["ville"].'</td>
+ <td  style="border: 1px solid black;height: 20px;">'.$encaissement["libelle"].' '.$encaissement["banque"].'</td>
+ <td  style="border: 1px solid black;height: 20px;text-align: center;">'.$encaissement["date_valeur"].'</td>
+ <td align="right" style="border: 1px solid black;height: 20px;">'.number_format($encaissement["montant"], 2, '.', ' ').'</td>
+</tr>';
+            }
+            $html2pdf->writeHTML(' 
+             <table align="center" style="border-collapse: collapse; border: 1px solid black;">
+              <thead>
+                <tr style="border: 1px solid grey;">
+                    <th style="width: 80px;width;height: 20px;background-color: #e9ecef;text-align: center; border: 1px solid black;" >
+                        Facture
+                    </th>
+                    <th style="width: 170px;width;height: 20px;background-color: #e9ecef;text-align: center; border: 1px solid black;">
+                        Raison sociale
+                    </th>
+                    <th style="width: 100px;width;height: 20px;background-color: #e9ecef;text-align: center; border: 1px solid black;">
+                        Ville
+                    </th>
+                    <th style="width: 170px;width;height: 20px;background-color: #e9ecef;text-align: center; border: 1px solid black;">
+                        réference
+                    </th>
+                    <th style="width: auto;width;height: 20px;background-color: #e9ecef;text-align: center; border: 1px solid black;">
+                        date valeur
+                    </th>
+                    <th style="width: 80px;width;height: 20px;background-color: #e9ecef;text-align: center; border: 1px solid black;">
+                        Montant
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                
+            '.$body.'
+            
+              <tr >
+                    <td colspan="4"  >
+                    </td>
+                    <td style="border-right: 1px solid black;" >
+                       Total Bordereau
+                    </td>
+                       <td align="right" style="border: 1px solid black;height: 20px;">'.number_format($somme["somme"], 2, '.', ' ').'</td>
+                    </tr>
+            </tbody>
+            </table>
+             <br><br><br><br><br><br>
+');
+            $html2pdf->writeHTML($footer);
 
         }
-
-        else  if($request->get('banque')=='SG')
+    else  if($request->get('banque')=='SG')
         {
-            $html2pdf->writeHTML('<br><img src="http://100.1.1.8/ERP/erptest/public_html/layouts/resources/Logo/societe-generale.png" style="width: 150px;height: 140px;margin-top: -40px" /> <h3>Edicom SA</h3>
-                           <strong style="margin-left: 80px;font-weight: 400">AGENCE BIR ANZARANE</strong> <br><br>
-                            <strong style="margin-left: 80px;font-weight: 400">SGMB</strong> :<br> <br>
-                            <strong style="margin-left: 80px;">BORDEREAU DES REMISE DES VALEURS</strong> <strong style="margin-left: 200px"> N° </strong><br><br>
-                            <strong style="margin-left: 80px;font-weight: 500">CHEQUES</strong>
-                          
-                            
-                            
-                            ');
+            $html2pdf->writeHTML($header);
+            $body='';
+            foreach ($encaissements as &$encaissement)
+            {
+                $body.='
+                <tr >
+ <td style="border: 1px solid black;height: 20px;">'.$encaissement["number"].'</td>
+ <td  style="border: 1px solid black;height: 20px;">'.$encaissement["accountname"].'</td>
+ <td  style="border: 1px solid black;height: 20px;">'.$encaissement["ville"].'</td>
+ <td  style="border: 1px solid black;height: 20px;">'.$encaissement["libelle"].' '.$encaissement["banque"].'</td>
+ <td  style="border: 1px solid black;height: 20px;text-align: center;">'.$encaissement["date_valeur"].'</td>
+ <td align="right" style="border: 1px solid black;height: 20px;">'.number_format($encaissement["montant"], 2, '.', ' ').'</td>
+</tr>';
+            }
+            $html2pdf->writeHTML(' 
+             <table align="center" style="border-collapse: collapse; border: 1px solid black;">
+              <thead>
+                <tr style="border: 1px solid grey;">
+                    <th style="width: 80px;width;height: 20px;background-color: #e9ecef;text-align: center; border: 1px solid black;" >
+                        Facture
+                    </th>
+                    <th style="width: 170px;width;height: 20px;background-color: #e9ecef;text-align: center; border: 1px solid black;">
+                        Raison sociale
+                    </th>
+                    <th style="width: 100px;width;height: 20px;background-color: #e9ecef;text-align: center; border: 1px solid black;">
+                        Ville
+                    </th>
+                    <th style="width: 170px;width;height: 20px;background-color: #e9ecef;text-align: center; border: 1px solid black;">
+                        réference
+                    </th>
+                    <th style="width: auto;width;height: 20px;background-color: #e9ecef;text-align: center; border: 1px solid black;">
+                        date valeur
+                    </th>
+                    <th style="width: 80px;width;height: 20px;background-color: #e9ecef;text-align: center; border: 1px solid black;">
+                        Montant
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                
+            '.$body.'
+            
+              <tr >
+                    <td colspan="4"  >
+                    </td>
+                    <td style="border-right: 1px solid black;" >
+                       Total Bordereau
+                    </td>
+                       <td align="right" style="border: 1px solid black;height: 20px;">'.number_format($somme["somme"], 2, '.', ' ').'</td>
+                    </tr>
+            </tbody>
+            </table>
+             <br><br><br><br><br><br>
+');
+            $html2pdf->writeHTML($footer);
+
         }
-
-
-        /*  $html2pdf->writeHTML('<br><img src="http://100.1.1.8/ERP/erptest/public_html/layouts/resources/Logo/bp.png" />
-                                <h3>Edicom SA</h3>
-                               <strong style="margin-left: 80px;font-weight: 400">AGENCE Al Moukaouama</strong> <br><br>
-                               <strong style="margin-left: 80px;font-weight: 400">'.$encaissements.["banque"].' </strong> :<br> <br>
-                               <strong style="margin-left: 80px;">BORDEREAU DES REMISE DES VALEURS</strong> <strong style="margin-left: 200px"> N° '.$encaissements.["bordereau"].'</strong><br>');*/
-
         ob_end_clean();
         $html2pdf->output();
     }
-
-
-
-
     public function getFooterScripts(\App\Request $request)
     {
         $headerScriptInstances = parent::getFooterScripts($request);
