@@ -128,6 +128,7 @@
 			{/strip}
 			<script type="text/javascript">
                 $(document).ready(function() {
+                	
                     $('#OSSEmployees_editView_fieldName_date_naissance').change(function(){
                         var birth_date =$('#OSSEmployees_editView_fieldName_date_naissance').val();
                         var today = moment(new Date, 'DD/MM/YYYY');
@@ -151,9 +152,11 @@
                     	var type=$('select[name="type_emp"]').find(':selected').text();
                     	if(type=='Freelancer'){
                           isFreelancer();
-                    	}else{
+                    	}else if(type=='Employé'){
                          isEmployee();
+
                     	}
+
                  //alert("eee");
                     	
                         
@@ -172,21 +175,362 @@
 
         var contrat=$('select[name=contract]').parents().first().parents().first(); 
             contrat=contrat.parents().first().show();
+            // rendre false si et déja true
+            
+            //rendre true pour employé
+     
+        //Contract
+       //supprimer la class data-validation
+       $('select[name=contract]').removeAttr('data-validation-engine');  
+       var   contract ="validate[required,maxSize[25],funcCall[Vtiger_InputMask_Validator_Js.invokeValidation]]"    
+        $('select[name=contract]').attr('data-validation-engine',contract);
+
+
+        //civilite
+       //supprimer la class data-validation
+       $('select[name=civilite]').removeAttr('data-validation-engine');  
+       var   civilite ="validate[required,maxSize[25],funcCall[Vtiger_InputMask_Validator_Js.invokeValidation]]"    
+        $('select[name=civilite]').attr('data-validation-engine',civilite);
+
+      //supprimer la class data-fieldinfo  
+        $('select[name=civilite]').removeAttr('data-fieldinfo');
+        var civilite1='"mandatory":true,"presence":true,"quickcreate":false,"masseditable":true,"header_field":false,"maxlengthtext":0,"maximumlength":"25","maxwidthcolumn":0,"defaultvalue":"","type":"string","name":"ice","label":"ICE"'
+        var req =$('select[name=civilite]').attr('data-fieldinfo',civilite1);  
+
+        //Adresse
+       //supprimer la class data-validation
+       $('#OSSEmployees_editView_fieldName_adresse').removeAttr('data-validation-engine');  
+       var   adresse ="validate[required,maxSize[100],funcCall[Vtiger_InputMask_Validator_Js.invokeValidation]]"    
+        $('#OSSEmployees_editView_fieldName_adresse').attr('data-validation-engine',adresse);
+
+      //supprimer la class data-fieldinfo  
+        $('#OSSEmployees_editView_fieldName_adresse').removeAttr('data-fieldinfo');
+        var adresse1 ='"mandatory":true,"presence":true,"quickcreate":true,"masseditable":true,"header_field":false,"maxlengthtext":0,"maximumlength":"100","maxwidthcolumn":0,"defaultvalue":"","type":"string","name":"adresse","label":"Adresse"'
+        $('#OSSEmployees_editView_fieldName_adresse').attr('data-fieldinfo',adresse1);
+ 
+        //ville
+       //supprimer la class data-validation
+       $('#OSSEmployees_editView_fieldName_ville').removeAttr('data-validation-engine');  
+       var   ville ="validate[required,maxSize[100],funcCall[Vtiger_InputMask_Validator_Js.invokeValidation]]"    
+        $('#OSSEmployees_editView_fieldName_ville').attr('data-validation-engine',ville);
+
+      //supprimer la class data-fieldinfo  
+        $('#OSSEmployees_editView_fieldName_ville').removeAttr('data-fieldinfo');
+        var ville1 ='"mandatory":false,"presence":true,"quickcreate":true,"masseditable":true,"header_field":false,"maxlengthtext":0,"maximumlength":"30","maxwidthcolumn":0,"defaultvalue":"","type":"string","name":"ville","label":"Ville"'
+        $('#OSSEmployees_editView_fieldName_ville').attr('data-fieldinfo',ville1);         
+
+        //Cin
+       //supprimer la class data-validation
+       $('#OSSEmployees_editView_fieldName_id_card').removeAttr('data-validation-engine');  
+       var cin="validate[required,maxSize[25],funcCall[Vtiger_InputMask_Validator_Js.invokeValidation]]"    
+           
+        $('#OSSEmployees_editView_fieldName_id_card').attr('data-validation-engine',cin);
+
+      //supprimer la class data-fieldinfo  
+        $('#OSSEmployees_editView_fieldName_id_card').removeAttr('data-fieldinfo');
+        var cin1 ='"mandatory":true,"presence":true,"quickcreate":true,"masseditable":false,"header_field":false,"maxlengthtext":0,"maximumlength":"200","maxwidthcolumn":0,"defaultvalue":"","type":"string","name":"id_card","label":"Carte d&#039;identit\u00e9"'
+        $('#OSSEmployees_editView_fieldName_id_card').attr('data-fieldinfo',cin1);         
+
+        //date de naissance
+       //supprimer la class data-validation
+       $('#OSSEmployees_editView_fieldName_date_naissance').removeAttr('data-validation-engine');  
+       var   dateN ="validate[required,funcCall[Vtiger_Base_Validator_Js.invokeValidation]]"    
+        $('#OSSEmployees_editView_fieldName_date_naissance').attr('data-validation-engine',dateN);
+
+      //supprimer la class data-fieldinfo  
+        $('#OSSEmployees_editView_fieldName_date_naissance').removeAttr('data-fieldinfo');
+        var dateN1 ='"mandatory":true,"presence":true,"quickcreate":true,"masseditable":true,"header_field":false,"maxlengthtext":0,"maximumlength":null,"maxwidthcolumn":0,"defaultvalue":"","type":"date","name":"date_naissance","label":"Date de naissance ","date-format":"dd\/mm\/yyyy"';
+        $('#OSSEmployees_editView_fieldName_date_naissance').attr('data-fieldinfo',dateN1);         
+
+        //date d embauche
+       //supprimer la class data-validation
+       $('#OSSEmployees_editView_fieldName_date_embauche').removeAttr('data-validation-engine');  
+       var   d_embauche ="validate[required,funcCall[Vtiger_Base_Validator_Js.invokeValidation]]"    
+        $('#OSSEmployees_editView_fieldName_date_embauche').attr('data-validation-engine',d_embauche);
+
+      //supprimer la class data-fieldinfo  
+        $('#OSSEmployees_editView_fieldName_date_embauche').removeAttr('data-fieldinfo');
+        var d_embauche1 ='"mandatory":true,"presence":true,"quickcreate":true,"masseditable":true,"header_field":false,"maxlengthtext":0,"maximumlength":null,"maxwidthcolumn":0,"defaultvalue":"","type":"date","name":"date_embauche","label":"Date d embauche","date-format":"dd\/mm\/yyyy"';
+        $('#OSSEmployees_editView_fieldName_date_embauche').attr('data-fieldinfo',d_embauche1); 
+
+
+        //Situation familiale
+       //supprimer la class data-validation
+       $('select[name=situation_familiale]').removeAttr('data-validation-engine');  
+       var   cf ="validate[required,funcCall[Vtiger_Base_Validator_Js.invokeValidation]]"    
+        $('select[name=situation_familiale]').attr('data-validation-engine',cf);
+
+
+
+        //nbre Enfants
+       //supprimer la class data-validation
+       $('#OSSEmployees_editView_fieldName_nbr_enfants').removeAttr('data-validation-engine');  
+    var nbre_enf ="validate[required,funcCall[Vtiger_Base_Validator_Js.invokeValidation]]"
+              
+        $('#OSSEmployees_editView_fieldName_nbr_enfants').attr('data-validation-engine',nbre_enf);
+
+        //RIB
+       //supprimer la class data-validation
+       $('#OSSEmployees_editView_fieldName_rib').removeAttr('data-validation-engine');  
+    var rib ="validate[required,maxSize[200],funcCall[Vtiger_InputMask_Validator_Js.invokeValidation]]"
+              
+        $('#OSSEmployees_editView_fieldName_rib').attr('data-validation-engine',rib);
+
+        //Agence bancaire
+       //supprimer la class data-validation
+       $('#OSSEmployees_editView_fieldName_agence_bancaire').removeAttr('data-validation-engine');  
+    var agence_banc ="validate[required,maxSize[200],funcCall[Vtiger_InputMask_Validator_Js.invokeValidation]]"
+              
+        $('#OSSEmployees_editView_fieldName_agence_bancaire').attr('data-validation-engine',agence_banc);
+
+
+        //Direction d affectation
+       //supprimer la class data-validation
+       $('select[name=direction_affectation]').removeAttr('data-validation-engine');  
+    var d_affectation ="validate[required,funcCall[Vtiger_Base_Validator_Js.invokeValidation]]"
+              
+        $('select[name=direction_affectation]').attr('data-validation-engine',d_affectation);
+
+       
+       //Service d affectation
+       //supprimer la class data-validation
+       $('select[name=service_affectation]').removeAttr('data-validation-engine');  
+    var s_affectation ="validate[required,funcCall[Vtiger_Base_Validator_Js.invokeValidation]]"
+              
+        $('select[name=service_affectation]').attr('data-validation-engine',s_affectation);
+
+       //Fonction
+       //supprimer la class data-validation
+       $('#OSSEmployees_editView_fieldName_fonction').removeAttr('data-validation-engine');  
+    var fonction ="validate[required,maxSize[100],funcCall[Vtiger_InputMask_Validator_Js.invokeValidation]]"
+              
+        $('#OSSEmployees_editView_fieldName_fonction').attr('data-validation-engine',fonction);
+
+       //Email professionnel
+       //supprimer la class data-validation
+       $('#OSSEmployees_editView_fieldName_email_pro').removeAttr('data-validation-engine');  
+    var fonction ="validate[required,maxSize[100],funcCall[Vtiger_Base_Validator_Js.invokeValidation]]"
+              
+        $('#OSSEmployees_editView_fieldName_email_pro').attr('data-validation-engine',fonction);
+
+       //N° Téléphone
+       //supprimer la class data-validation
+       $('#OSSEmployees_editView_fieldName_telephone_').removeAttr('data-validation-engine');  
+    var fonction ="validate[required,maxSize[14],funcCall[Vtiger_InputMask_Validator_Js.invokeValidation]]"
+              
+        $('#OSSEmployees_editView_fieldName_telephone_').attr('data-validation-engine',fonction);
+
+       //Horaire
+       //supprimer la class data-validation
+       $('#OSSEmployees_editView_fieldName_horaire').removeAttr('data-validation-engine');  
+    var fonction ="validate[required,maxSize[30],funcCall[Vtiger_InputMask_Validator_Js.invokeValidation]]"
+              
+        $('#OSSEmployees_editView_fieldName_horaire').attr('data-validation-engine',fonction);
+
+      //enlever required pour les champs obligatoire pour freelancer
+      //patente
+               $('#OSSEmployees_editView_fieldName_patente').removeAttr('data-validation-engine');  
+       var   dv ="validate[maxSize[30],funcCall[Vtiger_InputMask_Validator_Js.invokeValidation]]"    
+        $('#OSSEmployees_editView_fieldName_patente').attr('data-validation-engine',dv);
+       //ICE
+       //supprimer la class data-validation
+       $('#OSSEmployees_editView_fieldName_ice').removeAttr('data-validation-engine');  
+       var   dv ="validate[maxSize[25],funcCall[Vtiger_InputMask_Validator_Js.invokeValidation]]"    
+        $('#OSSEmployees_editView_fieldName_ice').attr('data-validation-engine',dv);
+
+        //id fiscal
+       //supprimer la class data-validation
+       $('#OSSEmployees_editView_fieldName_identifiat_fiscal').removeAttr('data-validation-engine');  
+       var   dv ="validate[maxSize[30],funcCall[Vtiger_InputMask_Validator_Js.invokeValidation]]"    
+        $('#OSSEmployees_editView_fieldName_identifiat_fiscal').attr('data-validation-engine',dv);
+
     }
     function  isFreelancer(){
+    	
         var ice= $('#OSSEmployees_editView_fieldName_ice').parents().first();
             ice.parents().first().show();
         var patente=$('#OSSEmployees_editView_fieldName_patente').parents().first();
                                patente.parents().first().show();
-
+           
         var id_fiscal=$('#OSSEmployees_editView_fieldName_identifiat_fiscal').parents().first();
             id_fiscal.parents().first().show();
         var statut_type_emp=$('select[name=statut_type_emp]').parents().first();
             statut_type_emp= statut_type_emp.parents().first().parents().first().show();
-                               
+                              
         var contrat=$('select[name=contract]').parents().first().parents().first(); 
             contrat=contrat.parents().first().hide();
-        console.log(contrat);                   
+            // rendre obligatoire les champs patente, id fiscal, ice, type freelancer
+            //$('#OSSEmployees_editView_fieldName_patente').prop('required',true);
+         
+        //ICE
+       //supprimer la class data-validation
+       $('#OSSEmployees_editView_fieldName_ice').removeAttr('data-validation-engine');  
+       var   dv ="validate[required,maxSize[25],funcCall[Vtiger_InputMask_Validator_Js.invokeValidation]]"    
+        $('#OSSEmployees_editView_fieldName_ice').attr('data-validation-engine',dv);
+
+        //patente
+       //supprimer la class data-validation
+       $('#OSSEmployees_editView_fieldName_patente').removeAttr('data-validation-engine');  
+       var   dv ="validate[required,maxSize[30],funcCall[Vtiger_InputMask_Validator_Js.invokeValidation]]"    
+        $('#OSSEmployees_editView_fieldName_patente').attr('data-validation-engine',dv);
+
+          
+        //id fiscal
+       //supprimer la class data-validation
+       $('#OSSEmployees_editView_fieldName_identifiat_fiscal').removeAttr('data-validation-engine');  
+       var   dv ="validate[required,maxSize[30],funcCall[Vtiger_InputMask_Validator_Js.invokeValidation]]"    
+        $('#OSSEmployees_editView_fieldName_identifiat_fiscal').attr('data-validation-engine',dv);
+
+          
+        //les info de employes rendre non obligatoire
+       //Contract
+       //supprimer la class data-validation
+       $('select[name=contract]').removeAttr('data-validation-engine');  
+       var   contract ="validate[maxSize[25],funcCall[Vtiger_InputMask_Validator_Js.invokeValidation]]"    
+        $('select[name=contract]').attr('data-validation-engine',contract);
+
+        //civilite
+       //supprimer la class data-validation
+       $('select[name=civilite]').removeAttr('data-validation-engine');  
+       var   civilite ="validate[maxSize[25],funcCall[Vtiger_InputMask_Validator_Js.invokeValidation]]"    
+        $('select[name=civilite]').attr('data-validation-engine',civilite);
+
+      //supprimer la class data-fieldinfo  
+        $('select[name=civilite]').removeAttr('data-fieldinfo');
+        var civilite1='"mandatory":true,"presence":true,"quickcreate":false,"masseditable":true,"header_field":false,"maxlengthtext":0,"maximumlength":"25","maxwidthcolumn":0,"defaultvalue":"","type":"string","name":"ice","label":"ICE"'
+        var req =$('select[name=civilite]').attr('data-fieldinfo',civilite1);  
+
+        //Adresse
+       //supprimer la class data-validation
+       $('#OSSEmployees_editView_fieldName_adresse').removeAttr('data-validation-engine');  
+       var   adresse ="validate[maxSize[100],funcCall[Vtiger_InputMask_Validator_Js.invokeValidation]]"    
+        $('#OSSEmployees_editView_fieldName_adresse').attr('data-validation-engine',adresse);
+
+      //supprimer la class data-fieldinfo  
+        $('#OSSEmployees_editView_fieldName_adresse').removeAttr('data-fieldinfo');
+        var adresse1 ='"mandatory":true,"presence":true,"quickcreate":true,"masseditable":true,"header_field":false,"maxlengthtext":0,"maximumlength":"100","maxwidthcolumn":0,"defaultvalue":"","type":"string","name":"adresse","label":"Adresse"'
+        $('#OSSEmployees_editView_fieldName_adresse').attr('data-fieldinfo',adresse1);
+ 
+        //ville
+       //supprimer la class data-validation
+       $('#OSSEmployees_editView_fieldName_ville').removeAttr('data-validation-engine');  
+       var   ville ="validate[maxSize[100],funcCall[Vtiger_InputMask_Validator_Js.invokeValidation]]"    
+        $('#OSSEmployees_editView_fieldName_ville').attr('data-validation-engine',ville);
+
+      //supprimer la class data-fieldinfo  
+        $('#OSSEmployees_editView_fieldName_ville').removeAttr('data-fieldinfo');
+        var ville1 ='"mandatory":false,"presence":true,"quickcreate":true,"masseditable":true,"header_field":false,"maxlengthtext":0,"maximumlength":"30","maxwidthcolumn":0,"defaultvalue":"","type":"string","name":"ville","label":"Ville"'
+        $('#OSSEmployees_editView_fieldName_ville').attr('data-fieldinfo',ville1);         
+
+        //Cin
+       //supprimer la class data-validation
+       $('#OSSEmployees_editView_fieldName_id_card').removeAttr('data-validation-engine');  
+       var cin="validate[maxSize[25],funcCall[Vtiger_InputMask_Validator_Js.invokeValidation]]"    
+           
+        $('#OSSEmployees_editView_fieldName_id_card').attr('data-validation-engine',cin);
+
+      //supprimer la class data-fieldinfo  
+        $('#OSSEmployees_editView_fieldName_id_card').removeAttr('data-fieldinfo');
+        var cin1 ='"mandatory":true,"presence":true,"quickcreate":true,"masseditable":false,"header_field":false,"maxlengthtext":0,"maximumlength":"200","maxwidthcolumn":0,"defaultvalue":"","type":"string","name":"id_card","label":"Carte d&#039;identit\u00e9"'
+        $('#OSSEmployees_editView_fieldName_id_card').attr('data-fieldinfo',cin1);         
+
+        //date de naissance
+       //supprimer la class data-validation
+       $('#OSSEmployees_editView_fieldName_date_naissance').removeAttr('data-validation-engine');  
+       var   dateN ="validate[funcCall[Vtiger_Base_Validator_Js.invokeValidation]]"    
+        $('#OSSEmployees_editView_fieldName_date_naissance').attr('data-validation-engine',dateN);
+
+      //supprimer la class data-fieldinfo  
+        $('#OSSEmployees_editView_fieldName_date_naissance').removeAttr('data-fieldinfo');
+        var dateN1 ='"mandatory":true,"presence":true,"quickcreate":true,"masseditable":true,"header_field":false,"maxlengthtext":0,"maximumlength":null,"maxwidthcolumn":0,"defaultvalue":"","type":"date","name":"date_naissance","label":"Date de naissance ","date-format":"dd\/mm\/yyyy"';
+        $('#OSSEmployees_editView_fieldName_date_naissance').attr('data-fieldinfo',dateN1);         
+
+        //date d embauche
+       //supprimer la class data-validation
+       $('#OSSEmployees_editView_fieldName_date_embauche').removeAttr('data-validation-engine');  
+       var   d_embauche ="validate[funcCall[Vtiger_Base_Validator_Js.invokeValidation]]"    
+        $('#OSSEmployees_editView_fieldName_date_embauche').attr('data-validation-engine',d_embauche);
+
+      //supprimer la class data-fieldinfo  
+        $('#OSSEmployees_editView_fieldName_date_embauche').removeAttr('data-fieldinfo');
+        var d_embauche1 ='"mandatory":true,"presence":true,"quickcreate":true,"masseditable":true,"header_field":false,"maxlengthtext":0,"maximumlength":null,"maxwidthcolumn":0,"defaultvalue":"","type":"date","name":"date_embauche","label":"Date d embauche","date-format":"dd\/mm\/yyyy"';
+        $('#OSSEmployees_editView_fieldName_date_embauche').attr('data-fieldinfo',d_embauche1); 
+
+
+        //Situation familiale
+       //supprimer la class data-validation
+       $('select[name=situation_familiale]').removeAttr('data-validation-engine');  
+       var   cf ="validate[funcCall[Vtiger_Base_Validator_Js.invokeValidation]]"    
+        $('select[name=situation_familiale]').attr('data-validation-engine',cf);
+
+
+
+        //nbre Enfants
+       //supprimer la class data-validation
+       $('#OSSEmployees_editView_fieldName_nbr_enfants').removeAttr('data-validation-engine');  
+    var nbre_enf ="validate[funcCall[Vtiger_Base_Validator_Js.invokeValidation]]"
+              
+        $('#OSSEmployees_editView_fieldName_nbr_enfants').attr('data-validation-engine',nbre_enf);
+
+        //RIB
+       //supprimer la class data-validation
+       $('#OSSEmployees_editView_fieldName_rib').removeAttr('data-validation-engine');  
+    var rib ="validate[maxSize[200],funcCall[Vtiger_InputMask_Validator_Js.invokeValidation]]"
+              
+        $('#OSSEmployees_editView_fieldName_rib').attr('data-validation-engine',rib);
+
+        //Agence bancaire
+       //supprimer la class data-validation
+       $('#OSSEmployees_editView_fieldName_agence_bancaire').removeAttr('data-validation-engine');  
+    var agence_banc ="validate[maxSize[200],funcCall[Vtiger_InputMask_Validator_Js.invokeValidation]]"
+              
+        $('#OSSEmployees_editView_fieldName_agence_bancaire').attr('data-validation-engine',agence_banc);
+
+
+        //Direction d affectation
+       //supprimer la class data-validation
+       $('select[name=direction_affectation]').removeAttr('data-validation-engine');  
+    var d_affectation ="validate[funcCall[Vtiger_Base_Validator_Js.invokeValidation]]"
+              
+        $('select[name=direction_affectation]').attr('data-validation-engine',d_affectation);
+
+       
+       //Service d affectation
+       //supprimer la class data-validation
+       $('select[name=service_affectation]').removeAttr('data-validation-engine');  
+    var s_affectation ="validate[funcCall[Vtiger_Base_Validator_Js.invokeValidation]]"
+              
+        $('select[name=service_affectation]').attr('data-validation-engine',s_affectation);
+
+       //Fonction
+       //supprimer la class data-validation
+       $('#OSSEmployees_editView_fieldName_fonction').removeAttr('data-validation-engine');  
+    var fonction ="validate[maxSize[100],funcCall[Vtiger_InputMask_Validator_Js.invokeValidation]]"
+              
+        $('#OSSEmployees_editView_fieldName_fonction').attr('data-validation-engine',fonction);
+
+       //Email professionnel
+       //supprimer la class data-validation
+       $('#OSSEmployees_editView_fieldName_email_pro').removeAttr('data-validation-engine');  
+    var fonction ="validate[maxSize[100],funcCall[Vtiger_Base_Validator_Js.invokeValidation]]"
+              
+        $('#OSSEmployees_editView_fieldName_email_pro').attr('data-validation-engine',fonction);
+
+       //N° Téléphone
+       //supprimer la class data-validation
+       $('#OSSEmployees_editView_fieldName_telephone_').removeAttr('data-validation-engine');  
+    var fonction ="validate[maxSize[14],funcCall[Vtiger_InputMask_Validator_Js.invokeValidation]]"
+              
+        $('#OSSEmployees_editView_fieldName_telephone_').attr('data-validation-engine',fonction);
+
+       //Horaire
+       //supprimer la class data-validation
+       $('#OSSEmployees_editView_fieldName_horaire').removeAttr('data-validation-engine');  
+    var fonction ="validate[maxSize[30],funcCall[Vtiger_InputMask_Validator_Js.invokeValidation]]"
+              
+        $('#OSSEmployees_editView_fieldName_horaire').attr('data-validation-engine',fonction);
+        
                  }
                 });
+
 			</script>
