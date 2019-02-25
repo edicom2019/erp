@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6554bbf4-ff34-4a08-b4c3-b20679b9b77b" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/config.inc.php" afterPath="$PROJECT_DIR$/config/config.inc.php" />
-    </list>
+    <list default="true" id="6554bbf4-ff34-4a08-b4c3-b20679b9b77b" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -14,7 +12,7 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="config.inc.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="config.inc.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/config/config.inc.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="680">
@@ -24,7 +22,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="EditViewBlocks.tpl" pinned="false" current-in-tab="true">
+      <file leaf-file-name="EditViewBlocks.tpl" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/layouts/basic/modules/OSSEmployees/EditViewBlocks.tpl">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-7622">
@@ -112,15 +110,7 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="layouts" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="basic" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="modules" />
+              <option name="myItemId" value="files" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
@@ -134,19 +124,11 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="layouts" />
+              <option name="myItemId" value="files" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="basic" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="modules" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="OSSEmployees" />
+              <option name="myItemId" value="backups" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
@@ -255,18 +237,17 @@
       <workItem from="1546870455440" duration="683000" />
       <workItem from="1547026468196" duration="2953000" />
       <workItem from="1549881782859" duration="1856000" />
-      <workItem from="1551092485820" duration="469000" />
+      <workItem from="1551092485820" duration="833000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="16709000" />
+    <option name="totallyTimeSpent" value="17073000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="0" />
-    <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20885417" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20885417" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -527,18 +508,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/config/config.inc.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="680">
-          <caret line="52" column="45" lean-forward="false" selection-start-line="52" selection-start-column="45" selection-end-line="52" selection-end-column="45" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/layouts/basic/modules/OSSEmployees/EditViewBlocks.tpl">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-7622">
           <caret line="41" column="17" lean-forward="false" selection-start-line="41" selection-start-column="17" selection-end-line="41" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/config.inc.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="680">
+          <caret line="52" column="45" lean-forward="false" selection-start-line="52" selection-start-column="45" selection-end-line="52" selection-end-column="45" />
           <folding />
         </state>
       </provider>
