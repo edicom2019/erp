@@ -59,19 +59,19 @@
     <div class="form-group row">
         <label for="staticEmail" class="col-sm-2 col-form-label u-text-small-bold">Date Echeance</label>
         <div class="col-sm-10">
-            <input type="date" class=" form-control" name="date_echeance" id="date_echeance" value="<?php echo date('d/m/Y'); ?>" required>
+            <input type="date" class=" form-control" name="date_echeance" id="date_echeance" value="{$DATE}" required>
         </div>
     </div>
     <div class="form-group row">
         <label for="inputPassword" class="col-sm-2 col-form-label u-text-small-bold">Nombre de chèques</label>
         <div class="col-sm-10">
-            <input type="text" class="form-control" name="nbr_effets" id="nbr_effets" disabled>
+            <input type="text" class="form-control" name="nbr_effets" id="nbr_effets" value="{$EFFET}" disabled>
         </div>
     </div>
     <div class="form-group row">
         <label for="inputPassword" class="col-sm-2 col-form-label u-text-small-bold">Nombre de bordereaux</label>
         <div class="col-sm-10">
-            <input type="text" class="form-control" name="nbr_bordereaux" id="nbr_bordereaux" readonly>
+            <input type="text" class="form-control" name="nbr_bordereaux" id="nbr_bordereaux" value="{$NBORDEREAU}" readonly>
         </div>
     </div>
     <div class="form-group row">
@@ -80,11 +80,10 @@
             <input type="text" class=" form-control" name="bordereau" value="{$BORDERAU}" required>
         </div>
     </div>
-
-
     {include file=\App\Layout::getTemplatePath('EditViewActions.tpl', $MODULE)}
     {*
-        <button type="button" class="btn btn-light  js-popover-tooltip  FInvoice_listView_action_Exporter_en_PDF" onclick="window.location.href='index.php?module=Reglements&view=PDF&mode=generateReglement'" >PDF</button>*}
+       <button type="button" class="btn btn-light  js-popover-tooltip  FInvoice_listView_action_Exporter_en_PDF" onclick="window.location.href='index.php?module=Reglements&view=PDF&mode=generateReglement'" >PDF</button>
+    *}
 </form>
 <script type="text/javascript">
     $(document).ready(function() {

@@ -8,7 +8,7 @@
  * All Rights Reserved.
  * *********************************************************************************** */
 use Spipu\Html2Pdf\Html2Pdf;
-class Reglements_Cheque_View extends Vtiger_Index_View
+class Acomptes_Cheque_View extends Vtiger_Index_View
 {
     public function process(\App\Request $request)
     {
@@ -88,7 +88,7 @@ class Reglements_Cheque_View extends Vtiger_Index_View
        $response->emit();
        die();*/
         $mysqli = new mysqli($dbconfig['db_server'], $dbconfig['db_username'], $dbconfig['db_password'], $dbconfig['db_name'],$dbconfig['db_port']);
-        $query = $mysqli->query("SELECT count(*) as cnt FROM u_yf_reglements r WHERE r.banque_edicom like '$banque' AND r.type like '$type' AND date_valeur = '$date_echeance' ");/*CURDATE()*/
+        $query = $mysqli->query("SELECT count(*) as cnt FROM u_yf_acomptes a WHERE a.banque_edicom like '$banque' AND a.type like '$type' AND date_valeur = '$date_echeance' ");/*CURDATE()*/
         $reglements = $query->fetch_assoc()["cnt"];
         $mysqli->close();
         return $reglements;
@@ -116,7 +116,7 @@ class Reglements_Cheque_View extends Vtiger_Index_View
         $dbconfig = AppConfig::main('dbconfig');
 
         $mysqli = new mysqli($dbconfig['db_server'], $dbconfig['db_username'], $dbconfig['db_password'], $dbconfig['db_name'],$dbconfig['db_port']);
-        $query = $mysqli->query("UPDATE u_yf_reglements r SET bordereau='$bordereau' WHERE r.	banque_edicom = '$banque' AND r.type like '$type' AND date_valeur = '$date_echeance' ");
+        $query = $mysqli->query("UPDATE u_yf_acomptes a SET bordereau='$bordereau' WHERE a.banque_edicom = '$banque' AND a.type like '$type' AND date_valeur = '$date_echeance' ");
         $mysqli->close();
 
     }
@@ -158,15 +158,15 @@ class Reglements_Cheque_View extends Vtiger_Index_View
                 if($request->get('type')==3)
                     $type="Cheque hors place";
 
-        $encaissements=(new \App\Db\Query())->select("inv.number,acc.accountname,acc.ville,r.date_valeur,r.reg_a_recevoir,r.bordereau,r.type,r.banque,r.montant,r.banque,r.libelle,r.banque_edicom")
-            ->leftJoin('u_yf_finvoice inv','inv.finvoiceid=r.factu')
+        $encaissements=(new \App\Db\Query())->select("inv.number,acc.accountname,acc.ville,a.date_valeur,a.reg_a_recevoir,a.bordereau,a.type,a.banque,a.montant,a.banque,a.libelle,a.baque_edicom")
+            ->leftJoin('u_yf_finvoice inv','inv.finvoiceid=a.factu')
             ->leftJoin('vtiger_account acc','inv.accountid=acc.accountid')
-            ->where(["banque_edicom"=>$banque,"type"=>$type,"date_valeur"=>$date_echeance,"bordereau"=>$bordereau])
-            ->from("u_yf_reglements r")->all();
+            ->where(["baque_edicom"=>$banque,"type"=>$type,"date_valeur"=>$date_echeance,"bordereau"=>$bordereau])
+            ->from("u_yf_acomptes a")->all();
 
-        $sommes=(new \App\Db\Query())->select("sum(r.montant) as somme")
-            ->where(["banque_edicom"=>$banque,"type"=>$type,"date_valeur"=>$date_echeance,"bordereau"=>$bordereau])
-            ->from("u_yf_reglements r")->all();
+        $sommes=(new \App\Db\Query())->select("sum(a.montant) as somme")
+            ->where(["baque_edicom"=>$banque,"type"=>$type,"date_valeur"=>$date_echeance,"bordereau"=>$bordereau])
+            ->from("u_yf_acomptes a")->all();
         $viewer->assign('ENCAISSEMENTS', $encaissements);
         $viewer->assign('SOMMES', $sommes);
         $viewer->view('genererPDF.tpl', $qualifiedModuleName);
@@ -184,7 +184,7 @@ class Reglements_Cheque_View extends Vtiger_Index_View
 
         $header = ' '.$img.'<h3>Edicom SA</h3>
                             <strong style="margin-left: 80px;font-weight: 500;">'.$agence.'</strong> <br><br>
-                            <strong style="margin-left: 80px;font-weight: 500;">'.$encaissement["banque_edicom"].'</strong>:<strong> '.$RIB.'</strong><br> <br>
+                            <strong style="margin-left: 80px;font-weight: 500;">'.$encaissement["baque_edicom"].'</strong>:<strong> '.$RIB.'</strong><br> <br>
                             <strong style="margin-left: 80px;">'.$DES.'</strong> <strong style="margin-left: 200px"> N° '.$encaissement["bordereau"].' </strong> <br><br>
                             <strong style="margin-left: 80px;font-size: 12px">'.$t.'</strong><br><br>';
           $footer=' <strong style="margin-left: 80px;">LE RESPONSABLE DE L\'AGENCE</strong> <strong style="margin-left: 200px"> LE CLIENT </strong> <br><br> ';

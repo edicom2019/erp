@@ -38,20 +38,19 @@ $HELPDESK_SUPPORT_EMAIL_REPLY = '';
  */
 
 $dbconfig['db_server'] = 'localhost';
-$dbconfig['db_port'] = '3306';
+$dbconfig['db_port'] = '3307';
 $dbconfig['db_username'] = 'root';
-$dbconfig['db_password'] = 'edicom';
+$dbconfig['db_password'] = '';
 $dbconfig['db_name'] = 'erpequipe';
 $dbconfig['db_name_crm'] = 'edicom';
 $dbconfig['db_type'] = 'mysql';
 $dbconfig['db_status'] = 'true';
-
 $dbconfig['db_hostname'] = $dbconfig['db_server'] . ':' . $dbconfig['db_port'];
 
 $host_name = $dbconfig['db_hostname'];
 
 // backslash is required at the end of URL
-$site_URL = 'http://100.1.1.8/ERP/erp-equipe/erp/';
+$site_URL = 'http://localhost:8080/erp_github/';
 
 // cache direcory path
 $cache_dir = 'cache/';
@@ -137,7 +136,7 @@ $default_timezone = 'Africa/Casablanca';
 
 // If timezone is configured, try to set it
 if (isset($default_timezone) && function_exists('date_default_timezone_set')) {
-	date_default_timezone_set($default_timezone);
+    date_default_timezone_set($default_timezone);
 }
 
 // Maximum length of characters for title

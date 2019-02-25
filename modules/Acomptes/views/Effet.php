@@ -8,7 +8,8 @@
  * All Rights Reserved.
  * *********************************************************************************** */
 use Spipu\Html2Pdf\Html2Pdf;
-class Reglements_Cheque_View extends Vtiger_Index_View
+
+class Acomptes_Effet_View extends Vtiger_Index_View
 {
     public function process(\App\Request $request)
     {
@@ -40,47 +41,37 @@ class Reglements_Cheque_View extends Vtiger_Index_View
             $viewer->assign('DATE', $request->get('date_echeance'));
             $viewer->assign('BORDERAU', $request->get('bordereau'));
             $viewer->assign('TYPE', $request->get('type'));
-            $viewer->assign('EFFET', $request->get('nbr_effets'));
-            $viewer->assign('NBORDEREAU', $request->get('nbr_bordereaux'));
-            $viewer->view('Cheque.tpl', $qualifiedModuleName);
+            $viewer->view('Effet.tpl', $qualifiedModuleName);
         }
     }
-
-
-
-
     public function getEncaissement($request)
     {
         $date_echeance=$request->get('date_echeance');
-        $date_echeance= date('Y-m-d',strtotime(str_replace('/', '-', $date_echeance)));
+
         if($request->get('banque')=='BP')
-            $banque="BANQUE POPULAIRE";
+            $banque="Banque Populaire";
         else  if($request->get('banque')=='SG')
-            $banque="SGMB";
+            $banque="Attijariwafa bank";
 
         if($request->get('type')==1)
             $type="Effet";
         else
             if($request->get('type')==2)
-                $type="Cheque sur place";
+            $type="Cheque sur place";
         else
             if($request->get('type')==3)
-                $type="Cheque hors place";
-       /* echo $banque;
-        echo $type;
-        echo $date_echeance;
-        die();*/
+            $type="Cheque hors place";
         /*$db = \App\Db::getInstance();
         $count_reglements=$db->select(['count(*)'])->from('u_yf_reglements')->where(['date_valeur' => $date_echeance,"banque"=> $banque,"type"=>$type])->createCommand()->execute();
         var_dump($count_reglements); die;*/
         /*$date_echeance= date('Y-m-d', strtotime(str_replace('/', '-', $date_echeance)));
         */
-
+        $date_echeance= date('Y-m-d',strtotime(str_replace('/', '-', $date_echeance)));
         $d=date('Y-m-d');
-        /*  echo "SELECT  inv.number,acc.accountname,acc.ville,r.date_valeur,r.reg_a_recevoir,r.bordereau,r.type,r.banque  FROM u_yf_reglements r
-          left outer join u_yf_finvoice inv on inv.finvoiceid=r.facture
-          left outer join vtiger_account acc on inv.accountid=acc.accountid
-       WHERE r.banque = '$banque' AND r.type = '$type' AND date_valeur = '$date_echeance' "; die;*/
+      /*  echo "SELECT  inv.number,acc.accountname,acc.ville,r.date_valeur,r.reg_a_recevoir,r.bordereau,r.type,r.banque  FROM u_yf_reglements r
+    	left outer join u_yf_finvoice inv on inv.finvoiceid=r.facture
+    	left outer join vtiger_account acc on inv.accountid=acc.accountid
+     WHERE r.banque = '$banque' AND r.type = '$type' AND date_valeur = '$date_echeance' "; die;*/
         $dbconfig = AppConfig::main('dbconfig');
         /* var_dump($date_echeance);*/
         /*$response = new Vtiger_Response();
@@ -88,7 +79,7 @@ class Reglements_Cheque_View extends Vtiger_Index_View
        $response->emit();
        die();*/
         $mysqli = new mysqli($dbconfig['db_server'], $dbconfig['db_username'], $dbconfig['db_password'], $dbconfig['db_name'],$dbconfig['db_port']);
-        $query = $mysqli->query("SELECT count(*) as cnt FROM u_yf_reglements r WHERE r.banque_edicom like '$banque' AND r.type like '$type' AND date_valeur = '$date_echeance' ");/*CURDATE()*/
+        $query = $mysqli->query("SELECT count(*) as cnt FROM u_yf_acomptes a WHERE a.banque = '$banque' AND a.type = '$type' AND date_valeur = '$date_echeance' ");/*CURDATE()*/
         $reglements = $query->fetch_assoc()["cnt"];
         $mysqli->close();
         return $reglements;
@@ -104,27 +95,17 @@ class Reglements_Cheque_View extends Vtiger_Index_View
             $banque="BANQUE POPULAIRE";
         else  if($request->get('banque')=='SG')
             $banque="SGMB";
-
         if($request->get('type')==1)
             $type="Effet";
-        else
-            if($request->get('type')==2)
-                $type="Cheque sur place";
-            else
-                if($request->get('type')==3)
-                    $type="Cheque hors place";
+
         $dbconfig = AppConfig::main('dbconfig');
-
         $mysqli = new mysqli($dbconfig['db_server'], $dbconfig['db_username'], $dbconfig['db_password'], $dbconfig['db_name'],$dbconfig['db_port']);
-        $query = $mysqli->query("UPDATE u_yf_reglements r SET bordereau='$bordereau' WHERE r.	banque_edicom = '$banque' AND r.type like '$type' AND date_valeur = '$date_echeance' ");
+        $query = $mysqli->query("UPDATE u_yf_acomptes r SET bordereau='$bordereau' WHERE a.banque_edicom = '$banque' AND a.type like '$type' AND date_valeur = '$date_echeance' ");
         $mysqli->close();
-
     }
-
-
     public function generer($request)
     {
-        $t="CHEQUES";
+        $t="EFFETS";
         $DES="BORDEREAU DES REMISE DES VALEURS";
         $viewer = $this->getViewer($request);
         $qualifiedModuleName = $request->getModule(false);
@@ -152,25 +133,21 @@ class Reglements_Cheque_View extends Vtiger_Index_View
             $img='<br><img src="http://100.1.1.8/ERP/erptest/public_html/layouts/resources/Logo/societe-generale.png" style="width: 150px;height: 140px;margin-top: -40px" />';
 
         }
-           if($request->get('type')==2)
-                $type="Cheque sur place";
-            else
-                if($request->get('type')==3)
-                    $type="Cheque hors place";
+        if($request->get('type')==1)
+            $type="Effet";
 
-        $encaissements=(new \App\Db\Query())->select("inv.number,acc.accountname,acc.ville,r.date_valeur,r.reg_a_recevoir,r.bordereau,r.type,r.banque,r.montant,r.banque,r.libelle,r.banque_edicom")
-            ->leftJoin('u_yf_finvoice inv','inv.finvoiceid=r.factu')
+        $encaissements=(new \App\Db\Query())->select("inv.number,acc.accountname,acc.ville,a.date_valeur,a.reg_a_recevoir,a.bordereau,a.type,a.banque,a.montant,a.banque,a.libelle,a.baque_edicom")
+            ->leftJoin('u_yf_finvoice inv','inv.finvoiceid=a.factu')
             ->leftJoin('vtiger_account acc','inv.accountid=acc.accountid')
-            ->where(["banque_edicom"=>$banque,"type"=>$type,"date_valeur"=>$date_echeance,"bordereau"=>$bordereau])
-            ->from("u_yf_reglements r")->all();
+            ->where(["baque_edicom"=>$banque,"type"=>$type,"date_valeur"=>$date_echeance,"bordereau"=>$bordereau])
+            ->from("u_yf_acomptes a")->all();
 
-        $sommes=(new \App\Db\Query())->select("sum(r.montant) as somme")
-            ->where(["banque_edicom"=>$banque,"type"=>$type,"date_valeur"=>$date_echeance,"bordereau"=>$bordereau])
-            ->from("u_yf_reglements r")->all();
+        $sommes=(new \App\Db\Query())->select("sum(a.montant) as somme")
+            ->where(["baque_edicom"=>$banque,"type"=>$type,"date_valeur"=>$date_echeance,"bordereau"=>$bordereau])
+            ->from("u_yf_acomptes a")->all();
         $viewer->assign('ENCAISSEMENTS', $encaissements);
         $viewer->assign('SOMMES', $sommes);
         $viewer->view('genererPDF.tpl', $qualifiedModuleName);
-
 
         $html2pdf = new Html2Pdf('P','A4','fr');
         $html2pdf->pdf->SetAuthor('Encaissement');
@@ -184,10 +161,10 @@ class Reglements_Cheque_View extends Vtiger_Index_View
 
         $header = ' '.$img.'<h3>Edicom SA</h3>
                             <strong style="margin-left: 80px;font-weight: 500;">'.$agence.'</strong> <br><br>
-                            <strong style="margin-left: 80px;font-weight: 500;">'.$encaissement["banque_edicom"].'</strong>:<strong> '.$RIB.'</strong><br> <br>
+                            <strong style="margin-left: 80px;font-weight: 500;">'.$encaissement["baque_edicom"].'</strong>:<strong> '.$RIB.'</strong><br> <br>
                             <strong style="margin-left: 80px;">'.$DES.'</strong> <strong style="margin-left: 200px"> N° '.$encaissement["bordereau"].' </strong> <br><br>
                             <strong style="margin-left: 80px;font-size: 12px">'.$t.'</strong><br><br>';
-          $footer=' <strong style="margin-left: 80px;">LE RESPONSABLE DE L\'AGENCE</strong> <strong style="margin-left: 200px"> LE CLIENT </strong> <br><br> ';
+        $footer=' <strong style="margin-left: 80px;">LE RESPONSABLE DE L\'AGENCE</strong> <strong style="margin-left: 200px"> LE CLIENT </strong> <br><br> ';
 
 
         if($request->get('banque')=='BP')
@@ -249,7 +226,7 @@ class Reglements_Cheque_View extends Vtiger_Index_View
             $html2pdf->writeHTML($footer);
 
         }
-    else  if($request->get('banque')=='SG')
+        else  if($request->get('banque')=='SG')
         {
             $html2pdf->writeHTML($header);
             $body='';
@@ -311,6 +288,8 @@ class Reglements_Cheque_View extends Vtiger_Index_View
         ob_end_clean();
         $html2pdf->output();
     }
+
+
     public function getFooterScripts(\App\Request $request)
     {
         $headerScriptInstances = parent::getFooterScripts($request);
