@@ -67,7 +67,8 @@ class Accounts_List_View extends Vtiger_List_View
 								left join arrondissements arr on arr.code=f.code_arr
                                 left join quartiers q on q.code=f.code_quart
                                 left join villes vrc on vrc.code=f.code_ville_rc
-								where f.code_firme not in (select code_firme from ".$dbconfig['db_name'].".vtiger_account) group by f.code_firme limit 10000");
+                                inner join bon_commande b on b.code_firme=f.code_firme 
+								where f.code_firme not in (select code_firme from ".$dbconfig['db_name'].".vtiger_account) group by f.code_firme ");
 
 		$tableName="vtiger_crmentity";
 		$rows = $firmes->fetch_all();
