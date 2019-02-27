@@ -51,26 +51,32 @@ class Accounts_List_View extends Vtiger_List_View
 			$this->preProcessDisplay($request);
 		}
 	}
+
 	public function syncroniseAccountsAdded()
 	{
 		$dbconfig = AppConfig::main('dbconfig');
 		$mysqli = new mysqli($dbconfig['db_server'], $dbconfig['db_username'], $dbconfig['db_password'], $dbconfig['db_name_crm']);
-		$firmes=$mysqli->query("SELECT f.code_firme,f.rs_comp, v.ville,ld.email,ld.tel_1,
-								num_voie,comp_num_voie,lib_voie,comp_voie,arr.arrondissement,q.quartier 
+		$firmes=$mysqli->query("SELECT f.code_firme,f.rs_comp, v.ville,
+			                    ld.email, ld.tel_1,
+								f.num_voie, f.comp_num_voie,f.lib_voie, 
+								f.comp_voie,
+								arr.arrondissement, q.quartier 
 								FROM firmes f
 								left join villes v on v.code =f.code_ville 
 								left join lien_dirigeant ld on ld.code_firme =f.code_firme 
 								left join arrondissements arr on arr.code=f.code_arr
                                 left join quartiers q on q.code=f.code_quart
                                 left join villes vrc on vrc.code=f.code_ville_rc
-								where f.code_firme not in (select account_no from ".$dbconfig['db_name'].".vtiger_account)");
+								where f.code_firme not in (select code_firme from ".$dbconfig['db_name'].".vtiger_account) group by f.code_firme limit 10000");
+
 		$tableName="vtiger_crmentity";
 		$rows = $firmes->fetch_all();
 		$vtiger_crmentity=$this->getEntityDataForSave();
 		foreach ($rows as $row) {
 			$tableData=array( 
-				"account_no"=> $row[0], 
-				"accountname"=> $row[1], 
+				"code_firme"=> $row[0], 
+				"raison_sociale"=> $row[1],
+				"account_no"=> $row[1], 
 				"ville"=> $row[2],
 				"email1"=> $row[3], 
 				"phone"=> $row[4],
