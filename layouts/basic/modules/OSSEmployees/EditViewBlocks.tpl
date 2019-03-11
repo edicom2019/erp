@@ -150,7 +150,7 @@
                     $('select[name="type_emp"]').change(function(){
                     	//option[value="Freelancer"]
                     	var type=$('select[name="type_emp"]').find(':selected').text();
-                    	if(type=='Freelancer'){
+                    	if(type=='Patenté' || type=='Autoentrepreneur'){
                           isFreelancer();
                     	}else if(type=='Employé'){
                          isEmployee();
